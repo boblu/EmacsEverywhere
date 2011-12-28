@@ -1,4 +1,4 @@
-# Description
+Ôªø# Description
 * Provides an Emacs-like keybinding emulation mode on selective application on Windows7.
 * This emulation mode can be toggled on and off using the (Shift + CapsLock) key.
 
@@ -19,4 +19,4 @@
 This script is made based on the following:
 
 * [emacs key bingings everywhere](http://www.davesquared.net/2008/02/emacs-key-bindings-everywhere.html)
-* [WindowsÇ≈EmacsïóÉLÅ[ÉoÉCÉìÉh](http://usi3.com/index.php?title=Windows%E3%81%A7Emacs%E9%A2%A8%E3%82%AD%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%89)
+* [Windows„ÅßEmacsÈ¢®„Ç≠„Éº„Éê„Ç§„É≥„Éâ](http://usi3.com/index.php?title=Windows%E3%81%A7Emacs%E9%A2%A8%E3%82%AD%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%89)
