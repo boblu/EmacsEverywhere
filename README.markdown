@@ -1,6 +1,4 @@
-﻿## Description
-
-* Provides an Emacs-like keybinding emulation mode on selective application on Windows7.
+﻿* Provides an Emacs-like keybinding emulation mode on selective application on Windows7.
 * This emulation mode can be toggled on and off using the (Shift + CapsLock) key.
 
 ## Environment
