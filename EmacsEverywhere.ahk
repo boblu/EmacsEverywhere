@@ -1,26 +1,9 @@
-﻿;TEK: toggle emacs keybindings
-;Based on:
-;	http://www.davesquared.net/2008/02/emacs-key-bindings-everywhere.html
-;	http://usi3.com/index.php?title=Windows%E3%81%A7Emacs%E9%A2%A8%E3%82%AD%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%89
-
-
-;Requirement: AutoHotkey V1.x
-
-;Environment:
-;Keyboard:             Japanese
-;Platform:             Win7
-;Author/Email:         boblu at jiaeil.com
-
-
-;Script Function:
-;	Provides an Emacs-like keybinding emulation mode that can be toggled on and off using the (Shift + CapsLock) key.
-
-;use this for debug
+﻿;use this for debug
 ;ListVars
 ;Pause
 
 ;==========================
-;Initialise
+;Initialization
 ;==========================
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
