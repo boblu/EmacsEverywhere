@@ -15,6 +15,9 @@
 ;Script Function:
 ;	Provides an Emacs-like keybinding emulation mode that can be toggled on and off using the (Shift + CapsLock) key.
 
+;use this for debug
+;ListVars
+;Pause
 
 ;==========================
 ;Initialise
@@ -32,7 +35,7 @@ disabledIcon := "EmacsEverywhere_off.ico"
 is_pre_x = 0
 ; C-Space status
 is_pre_spc = 0
-IsInEmacsMode := false
+EmacsModeStat := false
 SetEmacsMode(false)
 
 
@@ -40,21 +43,37 @@ SetEmacsMode(false)
 ;Emacs mode toggle
 ;==========================
 +CapsLock::
-  SetEmacsMode(!IsInEmacsMode)
+	SetEmacsMode(!EmacsModeStat)
 return
 
 SetEmacsMode(toActive) {
-  local iconFile := toActive ? enabledIcon : disabledIcon
-  local state := toActive ? "ON" : "OFF"
-  
-  IsInEmacsMode := toActive
-  TrayTip, Emacs Everywhere, Emacs mode is %state%, 10, 1
-  Menu, Tray, Icon, %iconFile%,
-  Menu, Tray, Tip, Emacs Everywhere`nEmacs mode is %state%  
-
-  Send {Shift Up}
+	local iconFile := toActive ? enabledIcon : disabledIcon
+	local state := toActive ? "ON" : "OFF"
+	
+	EmacsModeStat := toActive
+	TrayTip, Emacs Everywhere, Emacs mode is %state%, 10, 1
+	Menu, Tray, Icon, %iconFile%,
+	Menu, Tray, Tip, Emacs Everywhere`nEmacs mode is %state%  
+	
+	Send {Shift Up}
 }
 
+is_target() {
+	if WinActive("ahk_class Notepad++") {
+		return true
+	} else {
+		return false
+	}
+}
+
+IsInEmacsMode() {
+	global EmacsModeStat
+	if (EmacsModeStat && is_target()) {
+		return true
+	} else {
+		return false
+	}
+}
 
 ;==========================
 ;Action Functions
@@ -76,6 +95,12 @@ kill_line()
 	Send {ShiftDown}{END}{SHIFTUP}
 	Sleep 10 ;[ms]
 	Send ^x
+	;if (RegExMatch(clipboard, "aa") > 0)
+	;{
+	;	Send ^o
+	;}
+	
+	
 	global is_pre_spc = 0
 	Return
 }
@@ -242,13 +267,13 @@ scroll_down()
 ;Keybindings
 ;==========================
 ^x::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		is_pre_x = 1
 	Else
 		Send %A_ThisHotkey%
 	Return 
 ^f::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 	{
 		If is_pre_x
 		find_file()
@@ -259,7 +284,7 @@ scroll_down()
 		Send %A_ThisHotkey%
 	Return  
 ^c::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 	{
 		If is_pre_x
 		kill_emacs()
@@ -268,55 +293,55 @@ scroll_down()
 		Send %A_ThisHotkey%
 	Return  
 ^d::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		delete_char()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^h::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		delete_backward_char()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^k::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		kill_line()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^o::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		open_line()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^g::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		quit()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^j::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		newline_and_indent()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^m::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		newline()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^i::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		indent_for_tab_command()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^s::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 	{
 		If is_pre_x
 			save_buffer()
@@ -327,31 +352,31 @@ scroll_down()
 		Send %A_ThisHotkey%
 	Return
 ^r::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		isearch_backward()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^w::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		kill_region()
 	Else
 		Send %A_ThisHotkey%
 	Return
 !w::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		kill_ring_save()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^y::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		yank()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^/::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		undo()
 	Else
 		Send %A_ThisHotkey%
@@ -359,7 +384,7 @@ scroll_down()
  
 ;$^{Space}::
 ^vk20sc039::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 	{
 		If is_pre_spc
 			is_pre_spc = 0
@@ -370,7 +395,7 @@ scroll_down()
 		Send {CtrlDown}{Space}{CtrlUp}
 	Return
 ^@::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 	{
 		If is_pre_spc
 			is_pre_spc = 0
@@ -381,43 +406,43 @@ scroll_down()
 		Send %A_ThisHotkey%
 	Return
 ^a::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		move_beginning_of_line()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^e::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		move_end_of_line()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^p::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		previous_line()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^n::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		next_line()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^b::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		backward_char()
 	Else
 		Send %A_ThisHotkey%
 	Return
 ^v::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		scroll_down()
 	Else
 		Send %A_ThisHotkey%
 	Return
 !v::
-	If IsInEmacsMode
+	If IsInEmacsMode()
 		scroll_up()
 	Else
 		Send %A_ThisHotkey%
