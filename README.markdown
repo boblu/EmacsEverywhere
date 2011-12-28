@@ -1,25 +1,25 @@
-﻿# Description
+﻿## Description
 
 * Provides an Emacs-like keybinding emulation mode on selective application on Windows7.
 * This emulation mode can be toggled on and off using the (Shift + CapsLock) key.
 
-# Environment
+## Environment
 
-* Keyboard:             Japanese
-* Platform:             Win7
+* Keyboard: Japanese
+* Platform: Win7
 
-# Requirement
+## Requirement
 
 * AutoHotkey V1.x
 * Notepad++
 
-# Usage
+## Usage
 
 * Download and install [AutoHotKey](http://www.autohotkey.com)
 * Download this software and double click the script file inside
 * Use (Shift + CapsLock) to toggle emacs mode
 
-# Acknowledgement
+## Acknowledgement
 
 This script is made based on the following:
 
