@@ -61,20 +61,19 @@ IsInEmacsMode() {
 ;==========================
 ;Action Functions
 ;==========================
-delete_char()
-{
+delete_char() {
 	Send {Del}
 	global is_pre_spc = 0
 	Return
 }
-delete_backward_char()
-{
+
+delete_backward_char() {
 	Send {BS}
 	global is_pre_spc = 0
 	Return
 }
-kill_line()
-{
+
+kill_line() {
 	Send {ShiftDown}{END}{SHIFTUP}
 	Sleep 10 ;[ms]
 	Send ^x
@@ -87,93 +86,92 @@ kill_line()
 	global is_pre_spc = 0
 	Return
 }
-open_line()
-{
+
+open_line() {
 	Send {END}{Enter}{Up}
 	global is_pre_spc = 0
 	Return
 }
-quit()
-{
+
+quit() {
 	Send {ESC}
 	global is_pre_spc = 0
 	Return
 }
-newline()
-{
+
+newline() {
 	Send {Enter}
 	global is_pre_spc = 0
 	Return
 }
-indent_for_tab_command()
-{
+
+indent_for_tab_command() {
 	Send {Tab}
 	global is_pre_spc = 0
 	Return
 }
-newline_and_indent()
-{
+
+newline_and_indent() {
 	Send {Enter}{Tab}
 	global is_pre_spc = 0
 	Return
 }
-isearch_forward()
-{
+
+isearch_forward() {
 	Send ^f
 	global is_pre_spc = 0
 	Return
 }
-isearch_backward()
-{
+
+isearch_backward() {
 	Send ^f
 	global is_pre_spc = 0
 	Return
 }
-kill_region()
-{
+
+kill_region() {
 	Send ^x
 	global is_pre_spc = 0
 	Return
 }
-kill_ring_save()
-{
+
+kill_ring_save() {
 	Send ^c
 	global is_pre_spc = 0
 	Return
 }
-yank()
-{
+
+yank() {
 	Send ^v
 	global is_pre_spc = 0
 	Return
 }
-undo()
-{
+
+undo() {
 	Send ^z
 	global is_pre_spc = 0
 	Return
 }
-find_file()
-{
+
+find_file() {
 	Send ^o
 	global is_pre_x = 0
 	Return
 }
-save_buffer()
-{
+
+save_buffer() {
 	Send, ^s
 	global is_pre_x = 0
 	Return
 }
-kill_emacs()
-{
+
+kill_emacs() {
 	Send !{F4}
 	global is_pre_x = 0
 	Return
 }
- 
-move_beginning_of_line()
-{
+
+move_beginning_of_line() {
 	global
 	if is_pre_spc
 		Send +{HOME}
@@ -181,8 +179,8 @@ move_beginning_of_line()
 		Send {HOME}
 	Return
 }
-move_end_of_line()
-{
+
+move_end_of_line() {
 	global
 	if is_pre_spc
 		Send +{END}
@@ -190,8 +188,8 @@ move_end_of_line()
 		Send {END}
 	Return
 }
-previous_line()
-{
+
+previous_line() {
 	global
 	if is_pre_spc
 		Send +{Up}
@@ -199,8 +197,8 @@ previous_line()
 		Send {Up}
 	Return
 }
-next_line()
-{
+
+next_line() {
 	global
 	if is_pre_spc
 		Send +{Down}
@@ -208,17 +206,8 @@ next_line()
 		Send {Down}
 	Return
 }
-forward_char()
-{
-	global
-	if is_pre_spc
-		Send +{Right}
-	Else
-		Send {Right}
-	Return
-}
-backward_char()
-{
+
+backward_char() {
 	global
 	if is_pre_spc
 		Send +{Left} 
@@ -226,8 +215,8 @@ backward_char()
 		Send {Left}
 	Return
 }
-scroll_up()
-{
+
+scroll_up() {
 	global
 	if is_pre_spc
 		Send +{PgUp}
@@ -235,9 +224,9 @@ scroll_up()
 		Send {PgUp}
 	Return
 }
-scroll_down()
-{
-	global
+
+scroll_down() {
+        global
 	if is_pre_spc
 		Send +{PgDn}
 	Else
@@ -245,27 +234,44 @@ scroll_down()
 	Return
 }
 
+fallbackToDefault() {
+  Send %A_ThisHotkey%
+}
 
 ;==========================
 ;Keybindings
 ;==========================
 ^x::
-	If IsInEmacsMode()
-		is_pre_x = 1
-	Else
-		Send %A_ThisHotkey%
-	Return 
+  If IsInEmacsMode()
+    is_pre_x = 1
+  Else
+    fallbackToDefault()
+  Return
+
+h::
+  If (IsInEmacsMode() && is_pre_x) {
+    send ^a
+    is_pre_x = 0
+  }
+  Else
+    fallbackToDefault()
+  Return
+
 ^f::
-	If IsInEmacsMode()
-	{
-		If is_pre_x
-		find_file()
-		Else
-		forward_char()
-	}
-	Else
-		Send %A_ThisHotkey%
-	Return  
+  If IsInEmacsMode() {
+    If is_pre_x {
+      Send ^o
+      is_pre_x = 0
+    } Else {
+      if is_pre_spc
+        Send +{Right}
+      Else
+        Send {Right}
+    }
+  } Else
+    Send %A_ThisHotkey%
+  Return
+
 ^c::
 	If IsInEmacsMode()
 	{
